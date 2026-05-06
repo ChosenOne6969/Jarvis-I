@@ -9,7 +9,13 @@ const jarvisRoutes = require('./routes/jarvis');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://jarvis-i.vercel.app',
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use('/audio', express.static('public/audio'));
 
