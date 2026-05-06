@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://jarvis-i.vercel.app',
+    'https://jarvis-i-snowy.vercel.app',
   ],
   credentials: true
 }));
