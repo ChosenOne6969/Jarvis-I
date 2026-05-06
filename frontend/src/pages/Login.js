@@ -69,15 +69,16 @@ export default function Login() {
   }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('https://jarvis-i-f04q.onrender.com/api/auth/login', form);
-      login(res.data.token, res.data.user);
-      navigate('/mindspace');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
+  e.preventDefault();
+  setError('Initializing neural systems... this may take up to 30 seconds on first load.');
+  try {
+    const res = await axios.post('https://jarvis-i-f04q.onrender.com/api/auth/login', form);
+    login(res.data.token, res.data.user);
+    navigate('/mindspace');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+  }
+};
 
   return (
     <div style={styles.container}>
@@ -88,7 +89,12 @@ export default function Login() {
         <h1 style={styles.title}>JARVIS—I</h1>
         <p style={styles.quote}>"See Through Your Mind-Space"</p>
         <div style={styles.divider} />
-        {error && <p style={styles.error}>{error}</p>}
+        {error && (
+  <p style={{
+    ...styles.error,
+    color: error.includes('Initializing') ? '#c8a840' : '#c0392b'
+  }}>{error}</p>
+)}
         <form onSubmit={handleSubmit}>
           <input
             style={styles.input}

@@ -321,12 +321,27 @@ export default function MindSpace() {
   useEffect(() => { fetchNodes(); }, [fetchNodes]);
 
   useEffect(() => {
-    if (brainLoaded && !voiceSpoken && user?.name) {
-      const firstName = user.name.split(' ')[0];
-      setVoiceSpoken(true);
-      setTimeout(() => speakJarvis(firstName), 2000);
-    }
-  }, [brainLoaded, voiceSpoken, user]);
+  if (brainLoaded && !voiceSpoken && user?.name) {
+    const firstName = user.name.split(' ')[0];
+    setVoiceSpoken(true);
+    // On mobile, voice requires user interaction first
+    // We delay and attach to window touch event
+    const trySpeak = () => {
+      speakJarvis(firstName);
+      window.removeEventListener('touchstart', trySpeak);
+      window.removeEventListener('click', trySpeak);
+    };
+    // Try immediately for desktop, wait for touch on mobile
+    setTimeout(() => {
+      if (!isMobile()) {
+        speakJarvis(firstName);
+      } else {
+        window.addEventListener('touchstart', trySpeak, { once: true });
+        window.addEventListener('click', trySpeak, { once: true });
+      }
+    }, 1000);
+  }
+}, [brainLoaded, voiceSpoken, user]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -696,10 +711,19 @@ export default function MindSpace() {
   };
 
   const handlePlayPause = () => {
-    const audio = audioSystem.current;
-    if (!audio.ctx) { audio.play(TRACKS[currentTrack].type); setMusicPlaying(true); }
-    else { const nowPlaying = audio.toggle(); setMusicPlaying(nowPlaying); }
-  };
+  const audio = audioSystem.current;
+  // Resume AudioContext if suspended — required on mobile
+  if (audio.ctx && audio.ctx.state === 'suspended') {
+    audio.ctx.resume().then(() => {
+      const nowPlaying = audio.toggle();
+      setMusicPlaying(nowPlaying);
+    });
+    return;
+  }
+  if (!audio.ctx) { audio.play(TRACKS[currentTrack].type); setMusicPlaying(true); }
+  else { const nowPlaying = audio.toggle(); setMusicPlaying(nowPlaying); }
+};
+
   const switchTrack = (i) => { audioSystem.current.play(TRACKS[i].type); setCurrentTrack(i); setMusicPlaying(true); };
   const handleVolume = (v) => { setVolume(v); audioSystem.current.setVolume(v); };
 

@@ -70,6 +70,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('Initializing neural systems... this may take up to 30 seconds on first load.');
     try {
       const res = await axios.post('https://jarvis-i-f04q.onrender.com/api/auth/register', form);
       login(res.data.token, res.data.user);
@@ -88,7 +89,12 @@ export default function Register() {
         <h1 style={styles.title}>JARVIS—I</h1>
         <p style={styles.quote}>"The mind is infinite. Give it a home."</p>
         <div style={styles.divider} />
-        {error && <p style={styles.error}>{error}</p>}
+        {error && (
+  <p style={{
+    ...styles.error,
+    color: error.includes('Initializing') ? '#c8a840' : '#c0392b'
+  }}>{error}</p>
+)}
         <form onSubmit={handleSubmit}>
           <input
             style={styles.input}
