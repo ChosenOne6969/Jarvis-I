@@ -293,7 +293,7 @@ export default function MindSpace() {
 
   const OUTSIDE_POS = new THREE.Vector3(0, 0, 9);
   const INSIDE_POS = new THREE.Vector3(0, 0.2, 0.1);
-  const API = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API = 'https://jarvis-i-f04q.onrender.com/api';
   const headers = { Authorization: `Bearer ${token}` };
 
   const makeNode3D = (n, i, total) => {

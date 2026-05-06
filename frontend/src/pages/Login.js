@@ -71,7 +71,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', form);
+      const res = await axios.post('https://jarvis-i-f04q.onrender.com/api/auth/login', form);
       login(res.data.token, res.data.user);
       navigate('/mindspace');
     } catch (err) {
