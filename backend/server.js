@@ -13,6 +13,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://jarvis-i-snowy.vercel.app',
+    'https://jarvis-i-f04q.onrender.com',
   ],
   credentials: true
 }));
