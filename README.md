@@ -20,7 +20,7 @@ It was built as a final year diploma project by someone with ADHD, for people li
 
 | Service | URL |
 |---|---|
-| 🧠 Frontend | [jarvis-i.vercel.app](https://jarvis-i.vercel.app) |
+| 🧠 Frontend | [jarvis-i-snowy.vercel.app](https://jarvis-i-snowy.vercel.app/) |
 | ⚙️ Backend | Hosted on Render |
 | 🗄️ Database | MongoDB Atlas |
 
